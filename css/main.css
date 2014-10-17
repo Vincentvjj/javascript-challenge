@@ -8,9 +8,8 @@ body {
     color: #F00;
 }
 
-/*
-#occupationOther {
+
+form input[name='occupationOther'] {
     display: none;
-    i think... idk
 }
-*/
+
