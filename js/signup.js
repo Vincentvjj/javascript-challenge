@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', function() {
     var noThanksButton = document.getElementById('cancelButton');
     noThanksButton.addEventListener('click', function() {
         if(window.confirm('Are u sure?')) {
-            window.location.assign('http://google.com');
+            window.location = 'http://www.google.com';
         }
     });
 
