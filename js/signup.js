@@ -59,20 +59,29 @@ function validateForm(form) {
     var formValid = true; 
     var occupationSelect = document.getElementById('occupation');
     var occupationOther = document.getElementsByName('occupationOther')[0];
-    var zipRegEx = new RegExp('^\\D+$'); // change the regular expression
+    var zipRegEx = new RegExp('^\\d{5}$'); 
+    var zip = document.getElementsByName('zip')[0];
 
-    if(occupationSelect.value == 'other' && occupationOther.value.trim() == '') {
-        formValid = false;
-        occupationOther.className = "form-control invalid-field";
-    }
+    
 
-    if(!zipRegEx.test) // test it with zip code's vlock
 
     for(var i = 0; i < requiredFields.length; i++) {
         formValid &= validateRequiredField(form.elements[requiredFields[i]]);
     }
 
-    
+
+    if (occupationSelect.value == 'other' && occupationOther.value.trim() == '') {
+        formValid = false;
+        occupationOther.className = 'form-control invalid-field';
+    }
+
+    if (!zipRegEx.test(zip.value)) {
+        formValid = false; 
+        zip.className = 'form-control invalid-field';
+    }
+
+
+    //BIRTHDAY LEFT!!!!!! YYYYY
 
 
 
