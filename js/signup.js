@@ -37,8 +37,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-
-
     form.addEventListener('submit', onSubmit);
 
 });
@@ -55,41 +53,56 @@ function onSubmit(evt) {
 }
 
 function validateForm(form) {
-    var requiredFields = ['firstName', 'lastName', 'address1', 'city', 'zip', 'birthdate'];
-    var formValid = true; 
-    var occupationSelect = document.getElementById('occupation');
-    var occupationOther = document.getElementsByName('occupationOther')[0];
-    var zipRegEx = new RegExp('^\\d{5}$'); 
-    var zip = document.getElementsByName('zip')[0];
+    try {
 
-    
+        var requiredFields = ['firstName', 'lastName', 'address1', 'city', 'state', 'zip', 'birthdate'];
+        var formValid = true; 
+        var occupationSelect = document.getElementById('occupation');
+        var occupationOther = document.getElementsByName('occupationOther')[0];
+        var zipRegEx = new RegExp('^\\d{5}$'); 
+        var zip = document.getElementsByName('zip')[0];
+        var birthdate = document.getElementById('birthdate').value;
+        birthdate = new Date(birthdate);
+        var today = new Date();
+        var yearsDiff = today.getFullYear() - birthdate.getUTCFullYear();
+        var monthsDiff = today.getMonth() - birthdate.getUTCMonth();
+        var daysDiff = today.getDate() - birthdate.getUTCDate(); // Keep cutting me by one date.. dammit
 
 
-    for(var i = 0; i < requiredFields.length; i++) {
-        formValid &= validateRequiredField(form.elements[requiredFields[i]]);
+        for (var i = 0; i < requiredFields.length; i++) {
+            formValid &= validateRequiredField(form.elements[requiredFields[i]]);
+        }
+
+        if (occupationSelect.value == 'other' && occupationOther.value.trim() == '') {
+            formValid = false;
+            occupationOther.className = 'form-control invalid-field';
+        }
+        else {
+            occupationOther.className = 'form-control';
+        }
+
+        if (!zipRegEx.test(zip.value)) {
+            formValid = false; 
+            zip.className = 'form-control invalid-field';
+        }
+
+        if (monthsDiff < 0 || (monthsDiff === 0 && daysDiff < 0)) {
+            --yearsDiff;
+        }
+
+        if (yearsDiff < 13) {
+                document.getElementById('birthdateMessage').innerHTML = 'You need to be at least 13-years-old to sign up!';
+                formValid = false;
+                document.getElementById('birthdate').className = 'form-control invalid-field';
+        }
+
+        return formValid;
+
     }
 
-
-    if (occupationSelect.value == 'other' && occupationOther.value.trim() == '') {
-        formValid = false;
-        occupationOther.className = 'form-control invalid-field';
+    catch(exception) {
+        alert(exception);
     }
-
-    if (!zipRegEx.test(zip.value)) {
-        formValid = false; 
-        zip.className = 'form-control invalid-field';
-    }
-
-
-    //BIRTHDAY LEFT!!!!!! YYYYY
-
-
-
-    if(!formValid) {
-       alert();
-    }
-
-    return formValid;
 }
 
 
@@ -104,6 +117,7 @@ function validateRequiredField(field) {
     else {
         field.className = 'form-control';
     }
+
 
     return valid;
 
