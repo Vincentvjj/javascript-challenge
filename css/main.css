@@ -8,7 +8,6 @@ body {
     color: #F00;
 }
 
-
 form input[name='occupationOther'] {
     display: none;
 }

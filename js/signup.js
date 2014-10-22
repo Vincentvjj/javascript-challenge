@@ -1,11 +1,12 @@
 /*
+    Author: Vincent Jonany
+    Challege: Javascript Challenge
+    Date: 10/22/14
     Signup Form Script
     This script will load the state select list and validate the form before submission
 */
 
 "use strict";
-
-
 
 document.addEventListener('DOMContentLoaded', function() {
 
@@ -13,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function() {
     var option;
     var stateSelect = form.elements["state"];
 
-    for(var i = 0; i < usStates.length; i++) {
+    for (var i = 0; i < usStates.length; i++) {
         option = document.createElement('option');
         option.innerHTML = usStates[i].name;
         option.value = usStates[i].code;
@@ -21,27 +22,32 @@ document.addEventListener('DOMContentLoaded', function() {
         stateSelect.appendChild(option);
     }
 
-
     var occupationSelect = document.getElementById('occupation');
 
+    //When going back to the signup page, the occupationOther box will still be there
+    if (occupationSelect.value == 'other') {
+        document.getElementsByName('occupationOther')[0].style.display = 'block';
+    }
+
     occupationSelect.addEventListener('change', function() {
-        if(occupationSelect.value == 'other') {
-            document.getElementsByName('occupationOther')[0].style.display = "block";
+        if (occupationSelect.value == 'other') {
+            document.getElementsByName('occupationOther')[0].style.display = 'block';
+        }
+
+        else {
+            document.getElementsByName('occupationOther')[0].style.display = 'none';
         }
     });
 
     var noThanksButton = document.getElementById('cancelButton');
     noThanksButton.addEventListener('click', function() {
-        if(window.confirm('Are u sure?')) {
+        if (window.confirm('Are u sure?')) {
             window.location = 'http://www.google.com';
         }
     });
 
     form.addEventListener('submit', onSubmit);
-
 });
-
-
 
 function onSubmit(evt) {
     evt.returnValue = validateForm(this);
@@ -66,7 +72,7 @@ function validateForm(form) {
         var today = new Date();
         var yearsDiff = today.getFullYear() - birthdate.getUTCFullYear();
         var monthsDiff = today.getMonth() - birthdate.getUTCMonth();
-        var daysDiff = today.getDate() - birthdate.getUTCDate(); // Keep cutting me by one date.. dammit
+        var daysDiff = today.getDate() - birthdate.getUTCDate(); 
 
 
         for (var i = 0; i < requiredFields.length; i++) {
@@ -84,6 +90,12 @@ function validateForm(form) {
         if (!zipRegEx.test(zip.value)) {
             formValid = false; 
             zip.className = 'form-control invalid-field';
+            document.getElementById('zipMessage').innerHTML = 'Please enter a valid ZIP code';
+            //Shows feedback to users
+        }
+
+        else {
+            document.getElementById('zipMessage').style.display = 'none';
         }
 
         if (monthsDiff < 0 || (monthsDiff === 0 && daysDiff < 0)) {
@@ -91,13 +103,16 @@ function validateForm(form) {
         }
 
         if (yearsDiff < 13) {
-                document.getElementById('birthdateMessage').innerHTML = 'You need to be at least 13-years-old to sign up!';
-                formValid = false;
-                document.getElementById('birthdate').className = 'form-control invalid-field';
+            document.getElementById('birthdateMessage').innerHTML = 'You need to be AT LEAST 13-years-old to sign up!';
+            formValid = false;
+            document.getElementById('birthdate').className = 'form-control invalid-field';
+        }
+
+        else if (yearsDiff >= 13){
+            document.getElementById('birthdateMessage').style.display = 'none';
         }
 
         return formValid;
-
     }
 
     catch(exception) {
@@ -105,12 +120,12 @@ function validateForm(form) {
     }
 }
 
-
+//Check if the field is empty
 function validateRequiredField(field) {
     var value = field.value.trim();
     var valid = value.length > 0;
 
-    if(!valid) {
+    if (!valid) {
         field.className = 'form-control invalid-field';
     }
 
@@ -118,13 +133,7 @@ function validateRequiredField(field) {
         field.className = 'form-control';
     }
 
-
     return valid;
-
 }
 
     
-
-
-
-
