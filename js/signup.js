@@ -18,7 +18,6 @@ document.addEventListener('DOMContentLoaded', function() {
         option = document.createElement('option');
         option.innerHTML = usStates[i].name;
         option.value = usStates[i].code;
-
         stateSelect.appendChild(option);
     }
 
@@ -54,13 +53,11 @@ function onSubmit(evt) {
     if (evt.returnValue == false && evt.preventDefault) {
         evt.preventDefault();
     }
-
     return evt.returnValue;
 }
 
 function validateForm(form) {
     try {
-
         var requiredFields = ['firstName', 'lastName', 'address1', 'city', 'state', 'zip', 'birthdate'];
         var formValid = true; 
         var occupationSelect = document.getElementById('occupation');
