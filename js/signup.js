@@ -105,7 +105,7 @@ function validateForm(form) {
             document.getElementById('birthdate').className = 'form-control invalid-field';
         }
 
-        else if (yearsDiff >= 13){
+        else if (yearsDiff >= 13) {
             document.getElementById('birthdateMessage').style.display = 'none';
         }
 
